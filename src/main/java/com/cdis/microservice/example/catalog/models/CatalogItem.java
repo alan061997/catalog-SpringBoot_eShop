@@ -1,10 +1,5 @@
 package com.cdis.microservice.example.catalog.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -23,16 +18,16 @@ public class CatalogItem implements Serializable{
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "description", nullable = true, length = 255)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "pictureFileName", nullable = false, length = 255)
+    @Column(name = "pictureFileName", nullable = false)
     private String pictureFileName;
 
-    @Column(name = "pictureFileUri", nullable = false, length = 255)
+    @Column(name = "pictureFileUri", nullable = false)
     private String pictureFileUri;
 
     // References to other tables

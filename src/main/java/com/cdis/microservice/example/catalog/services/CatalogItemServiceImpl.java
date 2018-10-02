@@ -47,8 +47,7 @@ public class CatalogItemServiceImpl implements CatalogItemService {
 
     @Override
     public CatalogItem getItembyId(Long id) {
-        return catalogItemRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Catalog Item", "id", id));
+        return catalogItemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Catalog Brand", "id", id));
     }
 
     @Override

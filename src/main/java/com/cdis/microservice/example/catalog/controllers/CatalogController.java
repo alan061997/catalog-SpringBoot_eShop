@@ -1,6 +1,7 @@
 package com.cdis.microservice.example.catalog.controllers;
 
 
+import com.cdis.microservice.example.catalog.exceptions.ResourceNotFoundException;
 import com.cdis.microservice.example.catalog.models.CatalogBrand;
 import com.cdis.microservice.example.catalog.models.CatalogItem;
 import com.cdis.microservice.example.catalog.models.CatalogType;
@@ -8,12 +9,16 @@ import com.cdis.microservice.example.catalog.services.CatalogBrandService;
 import com.cdis.microservice.example.catalog.services.CatalogItemService;
 import com.cdis.microservice.example.catalog.services.CatalogTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -38,8 +43,8 @@ public class CatalogController {
     *
     */
     @GetMapping("/item")
-    public List<CatalogItem> getAllItems(Pageable pageable){
-        return catalogItemService.getAllCatalogItems(pageable).getContent();
+    public Page<CatalogItem> getAllItems(Pageable pageable){
+        return catalogItemService.getAllCatalogItems(pageable);
     }
 
     /*  Get a catalogItem record by Id
@@ -50,7 +55,13 @@ public class CatalogController {
      */
     @GetMapping("/item/{id}")
     public CatalogItem getItemById(@PathVariable(value = "id") final Long id){
-        return catalogItemService.getItembyId(id);
+        CatalogItem optionalCatalogItem = catalogItemService.getItembyId(id);
+
+        if(optionalCatalogItem == null){
+            throw new ResourceNotFoundException("CatalogItem", "id", id);
+        }
+
+        return optionalCatalogItem;
     }
 
     /*  Get an single item found by the Id Brand
@@ -61,7 +72,13 @@ public class CatalogController {
      */
     @GetMapping("/item/{id}/brand")
     public CatalogBrand getItemBrand(@PathVariable(value = "id") final Long id){
-        return catalogItemService.getItembyId(id).getCatalogBrand();
+        CatalogBrand catalogItemBrand = catalogItemService.getItembyId(id).getCatalogBrand();
+
+        if(catalogItemBrand == null) {
+            throw new ResourceNotFoundException("CatalogItem", "id", id);
+        }
+
+        return catalogItemBrand;
     }
 
     /*  Get an all item found by type_id
@@ -71,8 +88,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item/brand/{id}")
-    public List<CatalogItem> getItemAllItemsByBrand(Pageable pageable, @PathVariable(value = "id") final Long brand_id){
-        return catalogItemService.getAllCatalogItemsByBrand(brand_id, pageable).getContent();
+    public Page<CatalogItem> getItemAllItemsByBrand(Pageable pageable, @PathVariable(value = "id") final Long brand_id){
+        return catalogItemService.getAllCatalogItemsByBrand(brand_id, pageable);
     }
 
 
@@ -84,7 +101,11 @@ public class CatalogController {
      */
     @GetMapping("/item/{id}/type")
     public CatalogType getItemType(@PathVariable(value = "id") final Long id){
-        return catalogItemService.getItembyId(id).getCatalogType();
+        CatalogType catalogItemType = catalogItemService.getItembyId(id).getCatalogType();
+        if(catalogItemType == null){
+            throw new ResourceNotFoundException("CatalogItem", "id", id);
+        }
+        return catalogItemType;
     }
 
     /*  Get an all item found by type_id
@@ -94,8 +115,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item/type/{id}")
-    public List<CatalogItem> getItemAllItemsByType(Pageable pageable, @PathVariable(value = "id") final Long id){
-        return catalogItemService.getAllCatalogItemsByType(id, pageable).getContent();
+    public Page<CatalogItem> getItemAllItemsByType(Pageable pageable, @PathVariable(value = "id") final Long id){
+        return catalogItemService.getAllCatalogItemsByType(id, pageable);
     }
 
      /*  Get an all item found by type_id and brand_id
@@ -105,8 +126,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item/filter/{b_id}/{t_id}")
-    public List<CatalogItem> getItemAllFiltered(Pageable pageable, @PathVariable(value = "b_id") final Long brand_id, @PathVariable(value = "t_id") final Long type_id){
-        return catalogItemService.getAllCatalogItemsFiltered(brand_id, type_id, pageable).getContent();
+    public Page<CatalogItem> getItemAllFiltered(Pageable pageable, @PathVariable(value = "b_id") final Long brand_id, @PathVariable(value = "t_id") final Long type_id){
+        return catalogItemService.getAllCatalogItemsFiltered(brand_id, type_id, pageable);
     }
 
 
@@ -117,9 +138,14 @@ public class CatalogController {
      *
      */
     @PostMapping("/item")
-    public ResponseEntity<CatalogItem>  postCatalogItem(@Valid @RequestBody CatalogItem item) {
-        catalogItemService.addCatalogItem(item);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<Object>  postCatalogItem(@Valid @RequestBody CatalogItem item) {
+        CatalogItem savedItem = catalogItemService.addCatalogItem(item);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedItem.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     /*  Update an item
@@ -131,7 +157,18 @@ public class CatalogController {
     @PutMapping("/item/{id}")
     public ResponseEntity<CatalogItem> updateCatalogItem(@Valid @RequestBody CatalogItem item, @PathVariable(value = "id") final Long id){
         item.setId(id);
-        catalogItemService.addCatalogItem(item);
+
+        if(getItemById(id) == null){
+            throw new ResourceNotFoundException("CatalogItem", "id", id);
+        }
+
+        CatalogItem updatedItem = catalogItemService.addCatalogItem(item);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(updatedItem.getId())
+                .toUri();
+
         return ResponseEntity.noContent().build();
     }
 
@@ -144,7 +181,14 @@ public class CatalogController {
      */
     @DeleteMapping("/item/{id}")
     public ResponseEntity<CatalogItem> deleteCatalogItem(@PathVariable(value = "id") final Long id){
-        catalogItemService.deletingCatalogItemById(id);
+        CatalogItem itemToBeDeleted = catalogItemService.getItembyId(id);
+
+        if(itemToBeDeleted == null){
+            throw new ResourceNotFoundException("CatalogItem", "id", id);
+        } else {
+            catalogItemService.deletingCatalogItemById(id);
+        }
+
         return ResponseEntity.status(202).build();
     }
 
