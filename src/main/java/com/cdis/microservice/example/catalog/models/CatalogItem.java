@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Items")
-public class CatalogItem implements Serializable{
+public class CatalogItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

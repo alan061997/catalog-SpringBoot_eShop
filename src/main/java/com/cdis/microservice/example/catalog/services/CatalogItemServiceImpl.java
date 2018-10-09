@@ -16,7 +16,7 @@ public class CatalogItemServiceImpl implements CatalogItemService {
     private CatalogItemRepository catalogItemRepository;
 
     @Autowired
-    public CatalogItemServiceImpl(final CatalogItemRepository catalogItemRepository){
+    public CatalogItemServiceImpl(final CatalogItemRepository catalogItemRepository) {
         this.catalogItemRepository = catalogItemRepository;
     }
 

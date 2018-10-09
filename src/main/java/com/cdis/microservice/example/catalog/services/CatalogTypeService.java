@@ -8,6 +8,7 @@ import java.util.List;
 public interface CatalogTypeService {
 
     // Adds Types to the database
+
     /**
      * @param catalogType
      * @return CatalogType
@@ -15,6 +16,7 @@ public interface CatalogTypeService {
     CatalogType addCatalogType(CatalogType catalogType);
 
     // Deleting Type from catalog using Id
+
     /**
      * @param id
      * @return null
@@ -22,6 +24,7 @@ public interface CatalogTypeService {
     void deletingCatalogTypeById(final Long id);
 
     // Retrive Types from catalog
+
     /**
      * @param
      * @return List<CatalogType>
@@ -29,6 +32,7 @@ public interface CatalogTypeService {
     List<CatalogType> getAllCatalogTypes();
 
     // Retrieve Types by Id
+
     /**
      * @param id
      * @return CatalogType

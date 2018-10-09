@@ -8,6 +8,7 @@ import java.util.List;
 public interface CatalogBrandService {
 
     // Adds Brands to the database
+
     /**
      * @param catalogBrand
      * @return CatalogBrand
@@ -15,6 +16,7 @@ public interface CatalogBrandService {
     CatalogBrand addCatalogBrand(CatalogBrand catalogBrand);
 
     // Deleting Brand from catalog using Id
+
     /**
      * @param id
      * @return null
@@ -22,6 +24,7 @@ public interface CatalogBrandService {
     void deletingCatalogBrandById(final Long id);
 
     // Retrive Brands from catalog
+
     /**
      * @param
      * @return List<CatalogBrand>
@@ -29,6 +32,7 @@ public interface CatalogBrandService {
     List<CatalogBrand> getAllCatalogBrands();
 
     // Retrieve Brands by Id
+
     /**
      * @param id
      * @return CatalogBrand

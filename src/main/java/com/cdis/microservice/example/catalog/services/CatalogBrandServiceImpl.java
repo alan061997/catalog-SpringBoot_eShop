@@ -14,7 +14,7 @@ public class CatalogBrandServiceImpl implements CatalogBrandService {
     CatalogBrandRepository catalogBrandRepository;
 
     @Autowired
-    public CatalogBrandServiceImpl(final CatalogBrandRepository catalogBrandRepository){
+    public CatalogBrandServiceImpl(final CatalogBrandRepository catalogBrandRepository) {
         this.catalogBrandRepository = catalogBrandRepository;
     }
 

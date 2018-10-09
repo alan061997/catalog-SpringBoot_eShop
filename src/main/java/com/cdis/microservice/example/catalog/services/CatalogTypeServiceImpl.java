@@ -14,7 +14,7 @@ public class CatalogTypeServiceImpl implements CatalogTypeService {
     private CatalogTypeRepository catalogTypeRepository;
 
     @Autowired
-    public CatalogTypeServiceImpl(final CatalogTypeRepository catalogTypeRepository){
+    public CatalogTypeServiceImpl(final CatalogTypeRepository catalogTypeRepository) {
         this.catalogTypeRepository = catalogTypeRepository;
     }
 
