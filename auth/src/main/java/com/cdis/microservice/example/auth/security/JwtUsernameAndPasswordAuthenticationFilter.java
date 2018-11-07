@@ -1,9 +1,12 @@
 package com.cdis.microservice.example.auth.security;
 
+
 import com.cdis.microservice.example.auth.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Collections;
@@ -14,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -30,14 +32,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter   {
 
-    // We use auth manager to validate the user credentials
+    public static Logger logger = LoggerFactory.getLogger(JwtUsernameAndPasswordAuthenticationFilter.class);
     private AuthenticationManager authManager;
 
+    //@Autowired
+    //private UserService userService;
+
     private final JwtConfig jwtConfig;
-    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
+
+    JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
         this.authManager = authManager;
         this.jwtConfig = jwtConfig;
-
         // By default, UsernamePasswordAuthenticationFilter listens to "/login" path.
         // In our case, we use "/auth". So, we need to override the defaults.
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(jwtConfig.getUri(), "POST"));
@@ -68,8 +73,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     // The 'auth' passed to successfulAuthentication() is the current authenticated user.
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-
+                                            Authentication auth) {
         Long now = System.currentTimeMillis();
         String token = Jwts.builder()
                 .setSubject(auth.getName())
@@ -105,5 +109,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         public void setPassword(String password) {
             this.password = password;
         }
+
     }
 }

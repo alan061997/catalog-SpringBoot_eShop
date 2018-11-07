@@ -23,25 +23,17 @@ public class UserController {
         return "HOME PAGE";
     }
 
-    @GetMapping
-
-    @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(User user){
-        userService.addUser(user);
-        return ResponseEntity.ok(user);
-    }
-
     @GetMapping("/usuarios")
     public List<User> getUsers(){
         return userService.findUsers();
-    };
+    }
 
     @GetMapping("/usuarios/{id}")
     public User getUsersById(@PathVariable(name = "id") final Long id){
         return userService.findUserById(id);
-    };
+    }
 
-    @PostMapping("/usuarios")
+    @PostMapping("/register")
     public User postUser(@Valid @RequestBody User user){
         return userService.addUser(user);
     }
@@ -50,11 +42,11 @@ public class UserController {
     public String deleteUsersById(@PathVariable(name = "id") final Long id){
         userService.deleteUsernameById(id);
         return "Usuario Borrado";
-    };
+    }
 
     @GetMapping("/usuarios/{id}/send")
     public String sendUsersById(@PathVariable(name = "id") final Long id){
         return userService.sendUserCredentials(userService.findUserById(id).getUsername());
-    };
+    }
 
 }

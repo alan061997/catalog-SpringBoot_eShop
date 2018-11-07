@@ -35,6 +35,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()
                 // must be an admin if trying to access admin area (authentication is also required here)
                 .antMatchers("/catalog" + "/admin/**").hasRole("ADMIN")
+                .antMatchers("/basket" + "/admin/**").hasRole("ADMIN")
                 // Any other request must be authenticated
                 .anyRequest().authenticated();
     }

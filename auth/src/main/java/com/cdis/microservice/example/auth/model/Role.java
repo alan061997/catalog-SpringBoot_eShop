@@ -15,7 +15,7 @@ public class Role {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<User> userList;
 
     public Long getId() {
@@ -32,13 +32,5 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
     }
 }

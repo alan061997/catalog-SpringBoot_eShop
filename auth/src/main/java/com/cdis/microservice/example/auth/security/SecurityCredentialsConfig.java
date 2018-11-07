@@ -36,9 +36,10 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
                     .authorizeRequests()
+                    .antMatchers(HttpMethod.GET,"/home").permitAll()
+                    .antMatchers(HttpMethod.GET,"/usuarios").permitAll()
+                    .antMatchers(HttpMethod.POST, "/register").permitAll()
                     .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll().anyRequest().authenticated()
-                    .antMatchers("/home").permitAll().anyRequest().authenticated()
-                    .antMatchers("/usuarios/**").permitAll().anyRequest().authenticated()
                     .and()
                 .logout()
                     .permitAll()
@@ -52,7 +53,9 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        //auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
+
 
     @Bean
     public JwtConfig jwtConfig() {
