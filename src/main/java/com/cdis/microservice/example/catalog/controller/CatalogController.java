@@ -9,8 +9,7 @@ import com.cdis.microservice.example.catalog.service.CatalogBrandService;
 import com.cdis.microservice.example.catalog.service.CatalogItemService;
 import com.cdis.microservice.example.catalog.service.CatalogTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -47,8 +46,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item")
-    public Page<CatalogItem> getAllItems(Pageable pageable) {
-        return catalogItemService.getAllCatalogItems(pageable);
+    public List<CatalogItem> getAllItems() {
+        return catalogItemService.getAllCatalogItems();
     }
 
     /*  Get a catalogItem record by Id
@@ -92,8 +91,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item/brand/{id}")
-    public Page<CatalogItem> getItemAllItemsByBrand(Pageable pageable, @PathVariable(value = "id") final Long brand_id) {
-        return catalogItemService.getAllCatalogItemsByBrand(brand_id, pageable);
+    public List<CatalogItem> getItemAllItemsByBrand(@PathVariable(value = "id") final Long brand_id) {
+        return catalogItemService.getAllCatalogItemsByBrand(brand_id);
     }
 
 
@@ -119,8 +118,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item/type/{id}")
-    public Page<CatalogItem> getItemAllItemsByType(Pageable pageable, @PathVariable(value = "id") final Long id) {
-        return catalogItemService.getAllCatalogItemsByType(id, pageable);
+    public List<CatalogItem> getItemAllItemsByType(@PathVariable(value = "id") final Long id) {
+        return catalogItemService.getAllCatalogItemsByType(id);
     }
 
     /*  Get an all item found by type_id and brand_id
@@ -130,8 +129,8 @@ public class CatalogController {
      *
      */
     @GetMapping("/item/filter/{b_id}/{t_id}")
-    public Page<CatalogItem> getItemAllFiltered(Pageable pageable, @PathVariable(value = "b_id") final Long brand_id, @PathVariable(value = "t_id") final Long type_id) {
-        return catalogItemService.getAllCatalogItemsFiltered(brand_id, type_id, pageable);
+    public List<CatalogItem> getItemAllFiltered(@PathVariable(value = "b_id") final Long brand_id, @PathVariable(value = "t_id") final Long type_id) {
+        return catalogItemService.getAllCatalogItemsFiltered(brand_id, type_id);
     }
 
 

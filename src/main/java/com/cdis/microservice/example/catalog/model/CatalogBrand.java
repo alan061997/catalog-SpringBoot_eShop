@@ -21,6 +21,12 @@ public class CatalogBrand implements Serializable {
     @OneToMany(mappedBy = "catalogBrand", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CatalogItem> catalogItemList;
 
+    public CatalogBrand() {
+    }
+
+    public CatalogBrand(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

@@ -18,6 +18,13 @@ public class Role {
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<User> userList;
 
+    public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

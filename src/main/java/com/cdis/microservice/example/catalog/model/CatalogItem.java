@@ -70,6 +70,17 @@ public class CatalogItem implements Serializable {
     public CatalogItem() {
     }
 
+    public CatalogItem(String name, String description, double price, String pictureFileName, String pictureFileUri, CatalogType catalogType, CatalogBrand catalogBrand, Integer quantity) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.pictureFileName = pictureFileName;
+        this.pictureFileUri = pictureFileUri;
+        this.catalogType = catalogType;
+        this.catalogBrand = catalogBrand;
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }

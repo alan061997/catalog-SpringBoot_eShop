@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 class EventHandler {
 
-    public static Logger logger = LoggerFactory.getLogger(EventHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(EventHandler.class);
 
     private UserRepository userRepository;
 

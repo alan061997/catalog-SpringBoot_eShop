@@ -12,15 +12,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
 
-    //@Autowired
+    @Autowired
     private UserRepository userRepository;
-    private EventDispatcher eventDispatcher;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EventDispatcher eventDispatcher) {
-        this.userRepository = userRepository;
-        this.eventDispatcher = eventDispatcher;
-    }
+    private EventDispatcher eventDispatcher;
 
     @Override
     public User addUser(User user) {

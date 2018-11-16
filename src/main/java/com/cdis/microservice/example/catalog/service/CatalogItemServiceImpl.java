@@ -4,8 +4,6 @@ import com.cdis.microservice.example.catalog.exception.ResourceNotFoundException
 import com.cdis.microservice.example.catalog.model.CatalogItem;
 import com.cdis.microservice.example.catalog.repository.CatalogItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +13,7 @@ public class CatalogItemServiceImpl implements CatalogItemService {
 
     private CatalogItemRepository catalogItemRepository;
 
-    @Autowired
-    public CatalogItemServiceImpl(final CatalogItemRepository catalogItemRepository) {
+    public CatalogItemServiceImpl(CatalogItemRepository catalogItemRepository) {
         this.catalogItemRepository = catalogItemRepository;
     }
 
@@ -31,17 +28,17 @@ public class CatalogItemServiceImpl implements CatalogItemService {
     }
 
     @Override
-    public Page<CatalogItem> getAllCatalogItems(Pageable pageable) {
-        return catalogItemRepository.findAll(pageable);
+    public List<CatalogItem> getAllCatalogItems() {
+        return catalogItemRepository.findAll();
     }
 
     @Override
-    public Page<CatalogItem> getAllCatalogItemsFiltered(Long brand_id, Long type_id, Pageable pageable) {
-        return catalogItemRepository.findCatalogItemByCatalogBrand_IdAndCatalogType_Id(brand_id, type_id, pageable);
+    public List<CatalogItem> getAllCatalogItemsFiltered(Long brand_id, Long type_id) {
+        return catalogItemRepository.findCatalogItemByCatalogBrand_IdAndCatalogType_Id(brand_id, type_id);
     }
 
     @Override
-    public List<CatalogItem> getCatalogItemByName(String name) {
+    public CatalogItem getCatalogItemByName(String name) {
         return catalogItemRepository.findCatalogItemByName(name);
     }
 
@@ -51,13 +48,13 @@ public class CatalogItemServiceImpl implements CatalogItemService {
     }
 
     @Override
-    public Page<CatalogItem> getAllCatalogItemsByBrand(Long brand_id, Pageable pageable) {
-        return catalogItemRepository.findCatalogItemsByCatalogBrand_Id(brand_id, pageable);
+    public List<CatalogItem> getAllCatalogItemsByBrand(Long brand_id) {
+        return catalogItemRepository.findCatalogItemsByCatalogBrand_Id(brand_id);
     }
 
     @Override
-    public Page<CatalogItem> getAllCatalogItemsByType(Long type_id, Pageable pageable) {
-        return catalogItemRepository.findCatalogItemsByCatalogType_Id(type_id, pageable);
+    public List<CatalogItem> getAllCatalogItemsByType(Long type_id) {
+        return catalogItemRepository.findCatalogItemsByCatalogType_Id(type_id);
     }
 
 }
