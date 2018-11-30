@@ -1,9 +1,34 @@
 package com.cdis.microservice.example.basket.model;
 
-import lombok.Data;
 
-@Data
+import lombok.ToString;
+
+@ToString
 public class BasketUser {
     private Long userId;
-    private Long username;
+    private String username;
+
+    public BasketUser() {
+    }
+
+    public BasketUser(Long userId, String username) {
+        this.userId = userId;
+        this.username = username;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

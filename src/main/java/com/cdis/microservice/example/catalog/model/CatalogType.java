@@ -29,6 +29,11 @@ public class CatalogType implements Serializable {
         this.type = type;
     }
 
+    public CatalogType(Long id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
     public Long getId() {
         return id;
     }

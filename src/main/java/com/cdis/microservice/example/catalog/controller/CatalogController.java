@@ -141,14 +141,9 @@ public class CatalogController {
      *
      */
     @PostMapping("/item")
-    public ResponseEntity<Object> postCatalogItem(@Valid @RequestBody CatalogItem item) {
+    public String postCatalogItem(@Valid @RequestBody CatalogItem item) {
         CatalogItem savedItem = catalogItemService.addCatalogItem(item);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedItem.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+        return "Item creado con exito";
     }
 
     /*  Update an item
@@ -185,12 +180,6 @@ public class CatalogController {
     @DeleteMapping("/item/{id}")
     public ResponseEntity<CatalogItem> deleteCatalogItem(@PathVariable(value = "id") final Long id) {
         CatalogItem itemToBeDeleted = catalogItemService.getItembyId(id);
-
-        if (itemToBeDeleted == null) {
-            throw new ResourceNotFoundException("CatalogItem", "id", id);
-        } else {
-            catalogItemService.deletingCatalogItemById(id);
-        }
 
         return ResponseEntity.status(202).build();
     }
@@ -235,7 +224,7 @@ public class CatalogController {
         return ResponseEntity.status(201).build();
     }
 
-    @DeleteMapping("/Type/{id}")
+    @DeleteMapping("/type/{id}")
     public ResponseEntity<CatalogType> deleteCatalogType(@PathVariable(value = "id") final Long id) {
         catalogTypeService.deletingCatalogTypeById(id);
         return ResponseEntity.status(202).build();

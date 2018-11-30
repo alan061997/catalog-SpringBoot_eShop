@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Items")
-@EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(
         value = {"createdAt", "updatedAt"},
         allowGetters = true
@@ -57,13 +56,13 @@ public class CatalogItem implements Serializable {
 
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "createdAt", nullable = false, updatable = false)
+    @Column(name = "createdAt", updatable = false)
     @CreatedDate
     private Date createdAt;
 
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "updatedAt", nullable = false)
+    @Column(name = "updatedAt")
     @LastModifiedDate
     private Date updatedAt;
 
@@ -80,6 +79,19 @@ public class CatalogItem implements Serializable {
         this.catalogBrand = catalogBrand;
         this.quantity = quantity;
     }
+
+    public CatalogItem(Long id, String name, String description, double price, String pictureFileName, String pictureFileUri, CatalogType catalogType, CatalogBrand catalogBrand, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.pictureFileName = pictureFileName;
+        this.pictureFileUri = pictureFileUri;
+        this.catalogType = catalogType;
+        this.catalogBrand = catalogBrand;
+        this.quantity = quantity;
+    }
+
 
     public Long getId() {
         return id;
